@@ -1,0 +1,41 @@
+train:
+  mode: stage
+  batch_size: 1
+  stage1_iters: 3000
+  stage2_iters: 50000
+
+data:
+  video_frames: /home/wdong/workspace/sam3/frames/PBP01_01
+  semantic_paths: /home/wdong/workspace/sam3/frames/PBP01_01_semantic
+
+
+  start_frame: 30000
+  end_frame: 40000
+
+
+model:
+  type: ImageEncoder4DG-B
+
+  input_size: [ 1024, 1024 ]
+  patch_size: [ 14, 14 ]
+
+  hidden_size: 768
+  depth: 24
+  num_heads: 16
+  mlp_ratio: 4.0
+
+
+model_semantic:
+  type: SAM3LoRAEncoder
+  sam3_config: outputs/sam3_lora_full/full_lora_config.yaml
+  lora_weights: outputs/sam3_lora_full/best_lora_weights.pt
+  freeze: true
+
+
+model_gaussian:
+  type: GaussianModel
+  num_gaussians: 10000
+
+
+renderer:
+  type: GaussianRenderer4D
